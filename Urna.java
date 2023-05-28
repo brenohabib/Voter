@@ -1,14 +1,16 @@
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Urna {
-    public static Dictionary<Integer,String> eleitores = new Hashtable<>();
+    public static Map<Integer,Candidate> candidates = new HashMap<>();
 
-    public static void novoEleitor(String nomeEleitor, int idEleitor){
-        Eleitor eleitor = new Eleitor();
-        eleitor.nome = nomeEleitor;
-        eleitor.identificacao = idEleitor;
-        eleitores.put(idEleitor, nomeEleitor);
+    public static void newCandidate(String candidateName, int candidateId){
+        Candidate candidate = new Candidate(candidateName, candidateId);
+        candidates.put(candidateId, candidate);
+
+    }
+    public static Map<Integer,Candidate> getCandidates(){
+        return candidates;
     }
     
 }

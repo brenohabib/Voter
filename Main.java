@@ -3,33 +3,52 @@ public class Main{
     public static void main (String[] args){
         boolean running = true;
         Scanner input = new Scanner(System.in);
-        int totalEleitores;
-        System.out.println("Digite os nomes dos eleitores\nDigite -1 para finalizar");
+        int totCandidates, vote;
+        String candidateName, candidateSelected;
+        System.out.println("Enter candidates names\nenter -1 when done");
 
-        // Adicionar eleitores
-        for (int i = 0;;i++){
-            String nomeDoEleitor = input.nextLine();
-            if (nomeDoEleitor.equals("-1")){
-                totalEleitores = i;
+        // Add Candidate
+        for (int id = 0;;id++){
+            candidateName = input.nextLine();
+            if (candidateName.equals("-1")){
+                totCandidates = id; //add last candidate number to total
                 break;
             }
-            Urna.novoEleitor(nomeDoEleitor, i);
+            Urna.newCandidate(candidateName, id);
         }
-        // Mostrar todos os eleitores possíveis
-        System.out.println("Que comece a votação!");
-        for (int i = 0;i < totalEleitores;i++){
+        // Show every Candidate
+        for (int i = 0;i < totCandidates;i++){
             if (i == 0){
                 System.out.print("|");
             }
 
-            System.out.print(i + " = " + Urna.eleitores.get(i) + " | ");
+            System.out.print(i + " = " + Urna.candidates.get(i).getName() + " | ");
             
         }
-        // Votação dos eleitores
+        // Starting voting
+        System.out.println("\nStarting voting\nEnter -1 when done");
         while (running){
-            break;
+            vote = input.nextInt();
+            if(vote == -1){
+                running = false;
+            }
+            else if(vote >= totCandidates || vote > -1){
+                candidateSelected = Urna.getCandidates().get(vote).getName();
+                if (candidateSelected != null){
+                    // Increment vote count for the selected candidate
+                    Urna.getCandidates().get(vote).addVote();
+                }
+            }
+            else{
+                System.out.println("Invalid candidate number, try again");
+            }
 
         }
+        // Display vote counts for each candidate
+        System.out.println("\nVote counts:");
+        for (Candidate candidate : Urna.getCandidates().values()) {
+            System.out.println(candidate.getName() + ": " + candidate.getAmountVotes());
         input.close();
+        }
     }
 }
